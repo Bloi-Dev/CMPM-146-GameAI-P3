@@ -2,18 +2,19 @@
 cmpm146_venv/
 .venv/
 
-# Python cache
+# Python cache files
 __pycache__/
 *.py[cod]
 
-# macOS
-.DS_Store
+# Log files
+*.log
 
-# VS Code
+# IDE settings
+.idea/
 .vscode/
+
+# macOS files
+.DS_Store
 
 # Vim swap files
 *.swp
-
-# Log files
-*.log
