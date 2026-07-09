@@ -1,0 +1,19 @@
+# Python virtual environments
+cmpm146_venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# Vim swap files
+*.swp
+
+# Log files
+*.log
