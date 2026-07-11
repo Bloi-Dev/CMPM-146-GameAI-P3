@@ -47,6 +47,11 @@ def test(bot, opponent_bot, map_num):
         elif 'Player 2 Wins!' in line:
             print(opponent_name,'wins!')
             break
+        
+        #If Draw, Log Draw
+        elif 'Draw!' in line:
+            print('Draw!')
+            break
 
         if return_code is not None:
             break
