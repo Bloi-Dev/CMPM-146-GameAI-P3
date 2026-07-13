@@ -26,17 +26,50 @@ def setup_behavior_tree():
     # Top-down construction of behavior tree
     root = Selector(name='High Level Ordering of Strategies')
 
+    # -------------------------------------------------------
+    # Added: Respond to dangerous incoming enemy fleets first
+    # -------------------------------------------------------
+    defensive_plan = Sequence(name='Defensive Strategy')
+    threatened_planet_check = Check(threatened_planet_exists)
+    defend_action = Action (defend_threatened_planet)
+
+    defensive_plan.child_nodes = [
+        threatened_planet_check,
+        defend_action
+    ]
+
     offensive_plan = Sequence(name='Offensive Strategy')
     largest_fleet_check = Check(have_largest_fleet)
     attack = Action(attack_weakest_enemy_planet)
     offensive_plan.child_nodes = [largest_fleet_check, attack]
+
+    # --------------------------------------------------
+    # Added: Calculated attack that accounts for growth
+    # --------------------------------------------------
+    calculated_attack_plan = Sequence(
+        name='Calculated Enemy Attack Strategy'
+    )
+
+    attackable_enemy_check = Check(attackable_enemy_exists)
+    calculated_attack = Action(attack_capturable_enemy)
+
+    calculated_attack_plan.child_nodes = [
+        attackable_enemy_check,
+        calculated_attack
+    ]
 
     spread_sequence = Sequence(name='Spread Strategy')
     neutral_planet_check = Check(if_neutral_planet_available)
     spread_action = Action(spread_to_weakest_neutral_planet)
     spread_sequence.child_nodes = [neutral_planet_check, spread_action]
 
-    root.child_nodes = [offensive_plan, spread_sequence, attack.copy()]
+    root.child_nodes = [
+        defensive_plan,
+        offensive_plan,
+        calculated_attack_plan,
+        spread_sequence,
+        attack.copy()
+    ]
 
     logging.info('\n' + root.tree_to_string())
     return root
